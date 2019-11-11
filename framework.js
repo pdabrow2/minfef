@@ -39,8 +39,9 @@
             return modelPath.split('.').splice(-1)[0];
         return modelPath;
     }
-    window.setModel = function(modelPath, value)
+    window.setModel = function(modelPath, value, publishChanges)
     {
+        publishChanges = typeof(publishChanges) === 'undefined' ? true : false;
         if(!modelPath || modelPath.length === 0)
             applicationState = value;
         else
@@ -49,7 +50,8 @@
             var modelName = getName(modelPath);
             getRef(applicationState, modelDir)[modelName] = value;
         }
-        pushStateModelToDom(modelPath);
+        if(publishChanges)
+            pushStateModelToDom(modelPath);
         //console.log('setModel', applicationState);
     }
     window.getValue = function(modelPath)
@@ -85,6 +87,7 @@
             {
                 var domElement = boundElements[i];
                 var modelPath = domElement.attributes['data-model'].value;
+                setModel(modelPath, domElement.attributes['value'].value, false);
                 var ref = getRef(subscribersModelToDom, modelPath);
                 if(typeof(ref['subscribers']) === 'undefined')
                     ref['subscribers'] = [];
@@ -92,14 +95,14 @@
                 // to-way binding
                 if(typeof(ref['eventListeners']) === 'undefined')
                     ref['eventListeners'] = [];
-                var onChangeEventListener = function(_modelPath, _element) 
+                var onInputEventListener = function(_modelPath, _element) 
                 { 
                     setModel(_modelPath, _element.value); 
                 }.bind(null, modelPath, domElement);
                 // keeping a register for all event handlers
                 // this could be used to implement unbinding of an element
-                ref['eventListeners'].push(onChangeEventListener);
-                domElement.addEventListener('change', onChangeEventListener);
+                ref['eventListeners'].push(onInputEventListener);
+                domElement.addEventListener('input', onInputEventListener);
             }
         }
     }());
@@ -141,6 +144,33 @@
             }
         }
     }());
+    
+    function evaluateHtml(domElement) {
+        with(applicationState) {
+            return eval('var ret = false; try { ret = ' + domElement.attributes['data-html'].value + '; } catch {}; ret;');
+        }
+    }
+
+    function processHtml(domElement) {
+        domElement.innerHTML = evaluateHtml(domElement);
+    }
+
+    (function connectHtmlToDom() {
+        var domElementsWithHtml = document.querySelectorAll('[data-html]');
+        if(domElementsWithHtml && domElementsWithHtml.length > 0)
+        {
+            for(var i = 0; i < domElementsWithHtml.length; i++)
+            {
+                var domElement = domElementsWithHtml[i];
+                var modelPath = domElement.attributes['data-html'].value;
+                var ref = getRef(subscribersModelToDom, modelPath);
+                if(typeof(ref['subscribers']) === 'undefined')
+                    ref['subscribers'] = [];
+                ref.subscribers.push({type: 'html', element: domElement});
+                processHtml(domElement);
+            }
+        }
+    }());
 
     window.pushStateModelToDom = function(modelPath) {
         var ref = getRef(subscribersModelToDom, modelPath);
@@ -154,6 +184,9 @@
                         break;
                     case 'if':
                         processIf(subscription.element);
+                        break;
+                    case 'html':
+                        processHtml(subscription.element);
                         break;
                 }
             }
