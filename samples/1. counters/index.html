@@ -45,6 +45,7 @@
         </span>
 
         <br/>
+        Equations:
         <br/>
         <span data-if="counters.counter1 > counters.counter2">
             <span>counter1 > counter2</span>
@@ -52,20 +53,16 @@
         <span data-if="counters.counter1 < counters.counter2">
             <span>counter1 < counter2</span>
         </span>
-
-
+        <span data-if="counters.counter1 == counters.counter2">
+            <span>counter1 = counter2</span>
+        </span>
         <br/>
-        Equation:
-        <br/>
-
         <span data-if="counters.counter1 < counters.counter2">
                 <span data-html="counters.counter1"></span> < <span data-html="counters.counter2"></span>
         </span>
-        <br/>
         <span data-if="counters.counter1 > counters.counter2">
             <span data-html="counters.counter1"></span> > <span data-html="counters.counter2"></span>
         </span>
-        <br/>
         <span data-if="counters.counter1 == counters.counter2">
             <span data-html="counters.counter1"></span> = <span data-html="counters.counter2"></span>
         </span>
