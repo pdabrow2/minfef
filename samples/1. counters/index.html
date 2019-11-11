@@ -1,4 +1,5 @@
-<!DOCTYPE html> <html>
+<!DOCTYPE html> 
+<html>
     <head>
         <base href="../../"/>
         <link rel="stylesheet" href="framework.css" type="text/css">
@@ -42,6 +43,33 @@
         <span data-if="counters.counter1 > 2 && counters.counter2 > 2">
             <span>OMG! Counter1 and counter2 are both high at the same time.</span>
         </span>
+
+        <br/>
+        <br/>
+        <span data-if="counters.counter1 > counters.counter2">
+            <span>counter1 > counter2</span>
+        </span>
+        <span data-if="counters.counter1 < counters.counter2">
+            <span>counter1 < counter2</span>
+        </span>
+
+
+        <br/>
+        Equation:
+        <br/>
+
+        <span data-if="counters.counter1 < counters.counter2">
+                <span data-html="counters.counter1"></span> < <span data-html="counters.counter2"></span>
+        </span>
+        <br/>
+        <span data-if="counters.counter1 > counters.counter2">
+            <span data-html="counters.counter1"></span> > <span data-html="counters.counter2"></span>
+        </span>
+        <br/>
+        <span data-if="counters.counter1 == counters.counter2">
+            <span data-html="counters.counter1"></span> = <span data-html="counters.counter2"></span>
+        </span>
+        <br/>
 
         <br/>
         <br/>
