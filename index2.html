@@ -1,0 +1,38 @@
+<!DOCTYPE html> <html>
+    <head>
+        <link rel="stylesheet" href="framework2.css" type="text/css">
+    </head> 
+    <body> 
+        <input type='number' class='counter' value=0 data-model='counters.counter1' />
+        <input type='number' class='counter' value=0 data-model='counters.counter1' />
+        <button type="button" onclick="publish(INCREASE_VALUE_BY, 'counters.counter1', -1)">-</button>
+        <button type="button" onclick="publish(INCREASE_VALUE_BY, 'counters.counter1', 1)">+</button>
+        <button type="button" onclick="publish(SET_VALUE, 'counters.counter1', '')">reset</button>
+
+        <span data-if="counters.counter1 > 0">
+            <span>Above 0</span>
+        </span>
+        <span data-if="counters.counter1 < 0">
+            <span>Below 0</span>
+        </span>
+
+        <br/>
+
+        <input type='number' class='counter' value=0 data-model='counters.counter2'/>
+        <button type="button" onclick="publish(INCREASE_VALUE_BY, 'counters.counter2', -1)">-</button>
+        <button type="button" onclick="publish(INCREASE_VALUE_BY, 'counters.counter2', 1)">+</button>
+        <button type="button" onclick="publish(SET_VALUE, 'counters.counter2', '')">reset</button>
+
+        <span data-if="counters.counter2 > 2 && counters.counter1 < 0">
+            <span>This is pretty high...</span>
+        </span>
+        <span data-if="counters.counter2 < -2">
+            <span>This is pretty low...</span>
+        </span>
+
+        <br/>
+        <button type="button" onclick="publish(RESET);">reset state</button>
+        <script src="framework2.js"></script>
+        <script src="index2.js"></script>
+    </body> 
+</html>
